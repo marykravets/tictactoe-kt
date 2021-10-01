@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TikTacToe</string>
+
+    <string name="hello_first_fragment">Current Player:</string>
+    <string name="new_game">new game</string>
+    <string name="is_winner_text">%1$s is the winner!</string>
+</resources>
