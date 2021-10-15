@@ -1,6 +1,8 @@
 package com.example.tiktactoe.game
 
-import androidx.lifecycle.MutableLiveData
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import java.util.*
 
 class TicTacToeGame {
@@ -8,8 +10,12 @@ class TicTacToeGame {
     private val playerQueue = LinkedList<Player>()
     private var currentPlayer: Player? = null
     private lateinit var cells: Array<Array<Cell?>>
-    private val winner = MutableLiveData<Player?>()
-    private val state = MutableLiveData<String>()
+
+    private val _winner = MutableStateFlow<Player?>(null)
+    private val winner = _winner.asStateFlow()
+
+    private val _state = MutableStateFlow("")
+    private val state = _state.asStateFlow()
 
     private fun init() {
         cells = Array(BOARD_SIZE) {
@@ -26,19 +32,19 @@ class TicTacToeGame {
     }
 
     fun getCells(): Array<Array<Cell?>> {
-        return cells;
+        return cells
     }
 
     fun getCurrentPlayer(): Player? {
-        return currentPlayer;
+        return currentPlayer
     }
 
-    fun getWinner(): MutableLiveData<Player?> {
-        return winner;
+    fun getWinner(): StateFlow<Player?> {
+        return winner
     }
 
-    fun getState(): MutableLiveData<String> {
-        return state;
+    fun getState(): StateFlow<String> {
+        return state
     }
 
     private fun addPlayers() {
@@ -61,11 +67,11 @@ class TicTacToeGame {
 
     private fun isEnd(row: Int, col: Int): Boolean {
         if (isEqualHorizontal(row) || isEqualVertical(col) || isEqualDiagonal) {
-            winner.value = currentPlayer
+            _winner.value = currentPlayer
             return true
         }
         if (isBoardFull) {
-            winner.value = null
+            _winner.value = null
             return true
         }
         return false
@@ -139,11 +145,11 @@ class TicTacToeGame {
         val lastPlayer = playerQueue.poll()
         currentPlayer = lastPlayer
         playerQueue.offer(lastPlayer)
-        state.value = currentPlayer?.symbol
+        _state.value = currentPlayer?.symbol.toString()
     }
 
     fun reset() {
-        winner.value = null
+        _winner.value = null
         playerQueue.clear()
         currentPlayer = null
         init()

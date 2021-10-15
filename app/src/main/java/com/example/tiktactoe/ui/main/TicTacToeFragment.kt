@@ -9,6 +9,7 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.databinding.DataBindingUtil.inflate
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.tiktactoe.game.Cell
 import com.example.tiktactoe.game.Player
 import com.example.tiktactoe.R
@@ -16,6 +17,8 @@ import com.example.tiktactoe.databinding.FragmentTictactoeBinding
 import com.example.tiktactoe.game.TicTacToeGame
 import com.example.tiktactoe.game.TicTacToeGame.Companion.BOARD_DEFAULT_SYMBOL
 import com.example.tiktactoe.game.TicTacToeGame.Companion.BOARD_SIZE
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.util.ArrayList
 
 class TicTacToeFragment : Fragment(), AdapterView.OnItemClickListener, View.OnClickListener {
@@ -60,9 +63,14 @@ class TicTacToeFragment : Fragment(), AdapterView.OnItemClickListener, View.OnCl
         viewModel.init()
 
         viewModel.getWinner()
-            .observe(viewLifecycleOwner, { winner: Player? -> onWinnerChanged(winner) })
+            .onEach {
+                onWinnerChanged(it)
+            }.launchIn(lifecycleScope)
+
         viewModel.getState()
-            .observe(viewLifecycleOwner, { state: String? -> onStateChanged(state) })
+            .onEach {
+                onStateChanged(it)
+            }.launchIn(lifecycleScope)
     }
 
     private fun onWinnerChanged(winner: Player?) {

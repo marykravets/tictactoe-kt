@@ -1,9 +1,9 @@
 package com.example.tiktactoe.ui.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.example.tiktactoe.game.Player
 import com.example.tiktactoe.game.TicTacToeGame
+import kotlinx.coroutines.flow.StateFlow
 
 class TicTacToeViewModel : ViewModel() {
     private lateinit var game: TicTacToeGame
@@ -24,11 +24,11 @@ class TicTacToeViewModel : ViewModel() {
         game.reset()
     }
 
-    fun getWinner(): LiveData<Player?> {
+    fun getWinner(): StateFlow<Player?> {
         return game.getWinner()
     }
 
-    fun getState(): LiveData<String?> {
+    fun getState(): StateFlow<String?> {
         return game.getState()
     }
 }
