@@ -26,19 +26,19 @@ class TicTacToeGame {
     }
 
     fun getCells(): Array<Array<Cell?>> {
-        return cells;
+        return cells
     }
 
     fun getCurrentPlayer(): Player? {
-        return currentPlayer;
+        return currentPlayer
     }
 
     fun getWinner(): MutableLiveData<Player?> {
-        return winner;
+        return winner
     }
 
     fun getState(): MutableLiveData<String> {
-        return state;
+        return state
     }
 
     private fun addPlayers() {
